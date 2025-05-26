@@ -5,6 +5,7 @@ const cors = require('cors')
 const connectTodb = require('./db/db.js')
 const userRoutes = require('./routes/user.routes.js')
 const cookieParser = require('cookie-parser')
+const captainRoutes = require('./routes/captain.routes.js')
 
 dotenv.config()
 app.use(cors())
@@ -17,5 +18,6 @@ app.get('/', (req, res) =>{
     res.send('Hello World!')
 })
 app.use('/users',userRoutes)
+app.use('/captains', captainRoutes)
 
 module.exports =app;
