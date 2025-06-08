@@ -9,7 +9,7 @@ module.exports.createCaptain = async ({
     Adhaar,
     password,
     DrivingLicence,
-    vehicle // <-- Accept the whole vehicle object
+    vehicle    
 })=>{
     if (
         !firstname || !lastname || !email || !Adhaar || !password || !DrivingLicence ||

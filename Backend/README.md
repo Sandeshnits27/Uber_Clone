@@ -166,3 +166,177 @@
 #### Error Responses
 
 - **401 Unauthorized:** User is not authenticated.
+
+---
+
+## Captain Endpoints
+
+### 1. Register Captain
+
+- **Endpoint:** `/captains/register`
+- **Method:** `POST`
+- **Description:** Register a new captain and receive a JWT token.
+
+#### Request Body
+
+```json
+{
+  "fullname": {
+    "firstname": "Amit",
+    "lastname": "Sharma"
+  },
+  "email": "amit.sharma@example.com",
+  "password": "strongpassword",
+  "Adhaar": "123456789012",
+  "DrivingLicence": "DL1234567890",
+  "vehicle": {
+    "color": "White",
+    "plate": "DL01AB1234",
+    "capacity": 4,
+    "vehicletype": "car"
+  }
+}
+```
+
+#### Success Response
+
+- **Status:** 201 Created
+
+```json
+{
+  "token": "JWT_TOKEN_HERE",
+  "captain": {
+    "_id": "666666666666666666666666",
+    "fullname": {
+      "firstname": "Amit",
+      "lastname": "Sharma"
+    },
+    "email": "amit.sharma@example.com",
+    "Adhaar": "123456789012",
+    "DrivingLicence": "DL1234567890",
+    "vehicle": {
+      "color": "White",
+      "plate": "DL01AB1234",
+      "capacity": 4,
+      "vehicletype": "car"
+    },
+    "status": "inactive",
+    "socketId": null
+  }
+}
+```
+
+#### Error Responses
+
+- **400 Bad Request:** Missing or invalid fields.
+- **409 Conflict:** Email already in use.
+
+```json
+{
+  "error": [
+    {
+      "msg": "Vehicle plate must be at least 5 characters long",
+      "param": "vehicle.plate",
+      "location": "body"
+    }
+  ]
+}
+```
+
+---
+
+### 2. Captain Login
+
+- **Endpoint:** `/captains/login`
+- **Method:** `POST`
+- **Description:** Authenticate captain and receive a JWT token.
+
+#### Request Body
+
+```json
+{
+  "email": "amit.sharma@example.com",
+  "password": "strongpassword"
+}
+```
+
+#### Success Response
+
+- **Status:** 200 OK
+
+```json
+{
+  "token": "JWT_TOKEN_HERE",
+  "captain": {
+    "_id": "666666666666666666666666",
+    "fullname": {
+      "firstname": "Amit",
+      "lastname": "Sharma"
+    },
+    "email": "amit.sharma@example.com",
+    "Adhaar": "123456789012",
+    "DrivingLicence": "DL1234567890",
+    "vehicle": {
+      "color": "White",
+      "plate": "DL01AB1234",
+      "capacity": 4,
+      "vehicletype": "car"
+    },
+    "status": "inactive",
+    "socketId": null
+  }
+}
+```
+
+#### Error Responses
+
+- **400 Bad Request:** Missing or invalid fields.
+- **401 Unauthorized:** Invalid email or password.
+
+```json
+{
+  "error": "Invalid email or password"
+}
+```
+
+---
+
+### 3. Get Captain Profile
+
+- **Endpoint:** `/captains/profile`
+- **Method:** `GET`
+- **Description:** Retrieve the authenticated captain's profile.
+- **Authentication:** Requires JWT in `Authorization` header.
+
+#### Success Response
+
+- **Status:** 200 OK
+
+```json
+{
+  "captain": {
+    "_id": "666666666666666666666666",
+    "fullname": {
+      "firstname": "Amit",
+      "lastname": "Sharma"
+    },
+    "email": "amit.sharma@example.com",
+    "Adhaar": "123456789012",
+    "DrivingLicence": "DL1234567890",
+    "vehicle": {
+      "color": "White",
+      "plate": "DL01AB1234",
+      "capacity": 4,
+      "vehicletype": "car"
+    },
+    "status": "inactive",
+    "socketId": null
+  }
+}
+```
+
+#### Error Responses
+
+- **401 Unauthorized:** Captain is not authenticated.
+
+---
