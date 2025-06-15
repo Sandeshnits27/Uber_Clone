@@ -9,7 +9,8 @@ import TermsConditions from './text_file/terms_conditions.jsx';
 import PrivacyPolicy from './text_file/privacy_policy.jsx';
 import Start from './pages/start.jsx'
 import E from './Error.jsx'
-import { useContext } from 'react'
+import UserProtectedWrapper from './pages/UserProtectedWrapper.jsx'
+import UserLogout from './pages/UserLogout.jsx'
 
 
 const App = () => {
@@ -22,10 +23,28 @@ const App = () => {
         <Route path='/usersignup' element={<UserSignup/>} />
         <Route path='/captainlogin' element={<CaptainLogin/>} />
         <Route path='/captainsignup' element={<CaptainSignup/>} />
-        <Route path='/home' element={<Home/>} />
+
+        <Route path='/home' element={
+          <UserProtectedWrapper>
+            <Home />
+          </UserProtectedWrapper>
+        } />
+
         <Route path='/terms&conditions' element = {<TermsConditions />} />
         <Route path='/privacy&policy' element={<PrivacyPolicy />} />
         <Route path='*' element={<E/>} />
+
+            <Route path='/user/logout'
+          element={<UserProtectedWrapper>
+            <UserLogout />
+          </UserProtectedWrapper>
+          } />
+
+
+          
+        {/* <Route path='/user/logout' element={<UserProtectedWrapper/>}>
+            <UserLogout/>
+        </Route> */}
       </Routes>
     </div>
   )
