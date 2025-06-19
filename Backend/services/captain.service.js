@@ -1,7 +1,6 @@
 const {model} = require('mongoose')
 const captainModel = require('../models/captain.model.js');
 
-
 module.exports.createCaptain = async ({
     firstname,
     lastname,
@@ -10,13 +9,19 @@ module.exports.createCaptain = async ({
     password,
     DrivingLicence,
     vehicle    
-})=>{
+}) => {
     if (
-        !firstname || !lastname || !email || !Adhaar || !password || !DrivingLicence ||
-        !vehicle || !vehicle.color || !vehicle.plate || !vehicle.capacity || !vehicle.vehicletype
+        !firstname?.trim() || !lastname?.trim() || !email?.trim() ||
+        !Adhaar?.trim() || !password || !DrivingLicence?.trim() ||
+        !vehicle || 
+        !vehicle.color?.trim() || 
+        !vehicle.plate?.trim() || 
+        typeof vehicle.capacity !== 'number' || 
+        !['car', 'motorcycle', 'auto'].includes(vehicle.vehicleType)
     ) {
         throw new Error('All fields are required');
     }
+
     const captain = await captainModel.create({
         fullname: { firstname, lastname },
         Adhaar,
@@ -27,7 +32,7 @@ module.exports.createCaptain = async ({
             color: vehicle.color,
             plate: vehicle.plate,
             capacity: vehicle.capacity,
-            vehicletype: vehicle.vehicletype
+            vehicleType: vehicle.vehicleType
         }
     });
     return captain;

@@ -8,6 +8,7 @@ export default defineConfig({
     proxy: {
       '/users': 'http://localhost:3000',
       '/captains': 'http://localhost:3000'
-    }
+    },
+    historyApiFallback: true
   }
 })

@@ -1,84 +1,87 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Footer from '../footers/register_footer';
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { CaptainDataContext } from '../context/CaptainContext'
 
-const CaptainLogin = () => {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
+const Captainlogin = () => {
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const [ email, setEmail ] = useState('')
+  const [ password, setPassword ] = useState('')
 
-  const handleSubmit = (e) => {
+  const { captain, setCaptain } = React.useContext(CaptainDataContext)
+  const navigate = useNavigate()
+
+
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    // Add login logic here
-    console.log(form);
-  };
+    const captain = {
+      email: email,
+      password
+    }
 
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain)
+
+    if (response.status === 200) {
+      const data = response.data
+
+      setCaptain(data.captain)
+      localStorage.setItem('token', data.token)
+      navigate('/home')
+
+    }
+
+    setEmail('')
+    setPassword('')
+  }
   return (
-    <div
-      className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4"
-      style={{
-        backgroundImage: 'url(/src/assets/loginBg.png)',
-        backgroundSize: 'cover',
-      }}
-    >
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-semibold text-center mb-6">
-          Captain Login
-        </h2>
-        <form onSubmit={handleSubmit}>
+    
+    <div className='p-7 h-screen flex flex-col justify-between'>
+      <div>
+        <img className='w-20 mb-3' src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
+
+        <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4'>
+
+        <form onSubmit={(e) => {
+          submitHandler(e)
+        }}>
+          <h3 className='text-lg font-medium mb-2'>What's your email</h3>
           <input
+            required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value)
+            }}
+            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
             type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full h-10 px-3 mb-4 bg-gray-200 rounded-lg placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+            placeholder='email@example.com'
+            />
+
+          <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
+
           <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full h-10 px-3 mb-6 bg-gray-200 rounded-lg placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value)
+            }}
+            required type="password"
+            placeholder='password'
+            />
+
           <button
-            type="submit"
-            className="w-full h-10 flex items-center justify-center bg-black text-white font-semibold rounded-lg hover:bg-gray-800 mb-6"
-          >
-            Login
-          </button>
+            className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
+            >Login</button>
+
         </form>
-        <div className="flex items-center my-6">
-          <div className="flex-grow border-t border-gray-300"></div>
-          <span className="mx-4 text-sm text-gray-500">OR</span>
-          <div className="flex-grow border-t border-gray-300"></div>
-        </div>
-        <button className="w-full flex items-center justify-center h-10 mb-4 bg-gray-800 text-white rounded-lg hover:bg-gray-900">
-          <i className="fa-brands fa-google mr-2"></i> Continue with Google
-        </button>
-        <button className="w-full flex items-center justify-center h-10 bg-gray-800 text-white rounded-lg hover:bg-gray-900">
-          <i className="fa-brands fa-apple mr-2"></i>Continue with Apple
-        </button>
-        <div className="mt-4 text-center">
-          <Link
-            to="/captainsignup"
-            className="text-blue-600 hover:underline"
-          >
-            Don't have an account? Sign up
-          </Link>
-        </div>
-        <Footer />
+        <p className='text-center'>Join a fleet? <Link to='/captainsignup' className='text-blue-600'>Register as a Captain</Link></p>
+      </div>
+      <div>
+          </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CaptainLogin;
+export default Captainlogin
